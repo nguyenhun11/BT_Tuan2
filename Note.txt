@@ -1,0 +1,5 @@
+﻿#Hàm bạn lớp bạn
+Hàm bạn không thuộc lớp, có quyền truy cập private
+friend
+Các nguyên tắt cây dựng lớp
+.md
