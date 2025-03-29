@@ -1,7 +1,9 @@
 ﻿//Cài đặt String biểu diễn chuỗi ký tự, thiết lập, hủy bỏ, chiều dài, nối chuỗi, đảo chuỗi, chuyển chuỗi hoa/thường, nhập xuất chuỗi
 #include "myString.h"
 int main() {
+	cout << "Chuong trinh nhap chuoi \n";
 	myString s,l; //khoi tao
+	cout << "Nhap ten: ";
 	myString::cinstr(s, 100); //nhap
 	cout << s.strlen() << endl;
 	l = s; //myString& operator=(const myString& other);

@@ -15,22 +15,30 @@ void Day::Xuat() {
 	cout << ngay << "/" << thang << "/" << nam << endl;
 }
 void Day::Nhap() {
-	cout << "Nhap ngay: \n";
-	cout << "ngay: ";
-	cin >> ngay;
-	cout << "thang: ";
-	cin >> thang;
-	cout << "nam: ";
-	cin >> nam;
-	do {
-		cout << "Ngay khong hop le, nhap lai\n";
+	while (1) {
+		thang = 1;
 		cout << "ngay: ";
 		cin >> ngay;
+		if (!KiemTra()) {
+			cout << "Ngay khong hop le, nhap lai\n";
+			ngay = 1;
+			continue;
+		}
 		cout << "thang: ";
 		cin >> thang;
+		if (!KiemTra()) {
+			cout << "Thang khong hop le, nhap lai\n";
+			thang = 1;
+			continue;
+		}
 		cout << "nam: ";
 		cin >> nam;
-	} while (!KiemTra());
+		if (!KiemTra()) {
+			cout << "Ngay khong hop le, nhap lai\n";
+			continue;
+		}
+		else break;
+	}
 }
 
 bool Day::KiemTra() {

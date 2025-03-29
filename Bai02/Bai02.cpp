@@ -13,6 +13,7 @@
 #include "Point.h"
 
 int main() {
+	cout << "Diem\n";
 	Point A;
 	A.Xuat();
 	A.setX(3);
