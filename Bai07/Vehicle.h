@@ -24,8 +24,9 @@ public:
 	void TinhThue();
 	void Nhap();
 	void Xuat();
+	
 };
-class arrVehicle {
+class arrVehicle : Vehicle {
 	Vehicle* xe;
 	int num;
 public:
@@ -33,5 +34,9 @@ public:
 		xe = nullptr;
 		num = 0;
 	}
-};
+	~arrVehicle() {
+		delete[] xe;
+	}
+	void addVehicle(Vehicle);
 
+};
