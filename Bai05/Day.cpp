@@ -17,6 +17,7 @@ void Day::Xuat() {
 void Day::Nhap() {
 	while (1) {
 		thang = 1;
+		nam = 4;
 		cout << "ngay: ";
 		cin >> ngay;
 		if (!KiemTra()) {
