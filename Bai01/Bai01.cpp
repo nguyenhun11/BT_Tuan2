@@ -14,16 +14,14 @@
 #include "PhanSo.h"
 
 int main() {
-	cout << "Day la chuong trinh nhap phan so va tinh tong hieu\n";
-	PhanSo a,b;
-	a.NhapPhanSo();
-	b.NhapPhanSo();
-	cout << "\nTong = ";
-	a.cong(b).XuatPhanSo();
-	cout << "\nHieu = ";
-	a.tru(b).XuatPhanSo();
-	cout << "\nTich = ";
-	a.nhan(b).XuatPhanSo();
-	cout << "\nThuong = ";
-	a.chia(b).XuatPhanSo();
+	cout << "Day la chuong trinh nhap phan so va tinh cong tru nhan chia\n";
+	PhanSo a, b;
+	cin >> a; 
+	cin >> b; //Nhập Phân số
+	cout << a << " + " << b << " = " << a + b << endl; //Cộng
+	cout << a << " - " << b << " = " << a - b << endl; //Trừ
+	cout << a << " * " << b << " = " << a * b << endl; //Nhân
+	cout << a << " : " << b << " = " << a / b << endl; //Chia
+	cout << a << " + " << "10 = " << a + 10 << endl; //Cộng với số nguyên
+
 }

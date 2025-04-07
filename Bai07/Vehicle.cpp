@@ -1,7 +1,11 @@
+﻿//Mã số sinh viên: 24520604
+//Họ và tên: Nguyễn Gia Hưng
+//Ngày sinh: 11/01/2006
+//Lớp: IT002.P26.2
 #include "Vehicle.h"
 Vehicle::Vehicle() {
-	ChuXe = "";
-	LoaiXe = "";
+	ChuXe = "Chua nhap";
+	LoaiXe = "Chua nhap";
 	TriGiaXe = 0;
 	DungTich = 0;
 	TinhThue();
@@ -45,28 +49,87 @@ void Vehicle::TinhThue() {
 	else if (DungTich < 200) Thue = 3 * TriGiaXe / 100;
 	else Thue = 5 * TriGiaXe / 100;
 }
-void Vehicle::Nhap() {
+istream& operator>>(istream& is, Vehicle& a) {
 	cout << "NHAP THONG TIN XE:\n";
 	cout << "Chu xe: ";
-	getline(cin, ChuXe);
+	getline(cin, a.ChuXe);
 	cout << "Loai xe: ";
-	getline(cin, LoaiXe);
+	getline(cin, a.LoaiXe);
 	cout << "Tri gia xe: ";
-	cin >> TriGiaXe;
-	while (TriGiaXe < 0) {
+	is >> a.TriGiaXe;
+	while (a.TriGiaXe < 0) {
 		cout << "Tri gia >= 0:\nTri gia xe: ";
-		cin >> TriGiaXe;
+		is >> a.TriGiaXe;
 	}
 	cout << "Dung tich: ";
-	cin >> DungTich;
-	while (DungTich < 0) {
+	is >> a.DungTich;
+	while (a.DungTich < 0) {
 		cout << "Dung tich >= 0:\nDung tich xe: ";
-		cin >> DungTich;
+		is >> a.DungTich;
 	}
+	a.TinhThue();
+	return is;
 }
-void Vehicle::Xuat() {
-	cout << ChuXe << '\t' << LoaiXe << "\t" << TriGiaXe << "\t" << DungTich << "\t" << Thue << endl;
+ostream& operator<<(ostream& os, Vehicle a) {
+	os << "\nTHONG TIN XE\nChu xe: " << a.ChuXe;
+	os << "\nLoai xe: " << a.LoaiXe;
+	os << "\nTri gia xe: " << a.TriGiaXe;
+	os << "\nDung tich: " << a.DungTich;
+	os << "\nThue truoc ba: " << a.Thue << endl;
+	return os;
 }
-void XuatMang(Vehicle* a) {
-	
+void Vehicle::XuatNgang() {
+	cout << left
+		<< setw(20) << ChuXe
+		<< setw(15) << LoaiXe
+		<< setw(15) << TriGiaXe
+		<< setw(15) << DungTich
+		<< setw(15) << Thue
+		<< endl;
+}
+ListVehicle::ListVehicle() {
+	Head = nullptr;
+	Tail = nullptr;
+	size = 0;
+}
+ListVehicle::~ListVehicle() {
+	NodeVehicle* current = Head;
+	while (current != nullptr) {
+		NodeVehicle* temp = current;
+		current = current->next;
+		delete temp;
+	}
+	Head = nullptr;
+}
+void ListVehicle::addVehicle(Vehicle a) {
+	NodeVehicle* newNode = new NodeVehicle();
+	newNode->xe = a;
+	if (Head == nullptr) {
+		Head = newNode;
+		Tail = Head;
+	}
+	else {
+		Tail->next = newNode;
+		Tail = newNode;
+	}
+	size++;
+}
+void ListVehicle::XuatDanhSach() {
+	cout << "\nBANG KE KHAI THONG TIN CHI TIET";
+	cout << "\n" << left
+		<< setw(20) << "Chu Xe"
+		<< setw(15) << "Loai Xe"
+		<< setw(15) << "Tri Gia Xe"
+		<< setw(15) << "Dung Tich"
+		<< setw(15) << "Thue"
+		<< "\n";
+
+	// In dòng phân cách
+	cout << setfill('-') << setw(80) << "-" << setfill(' ') << endl;
+
+	NodeVehicle* current = Head;
+	while (current != nullptr) {
+		current->xe.XuatNgang();
+		current = current->next;
+	}
 }

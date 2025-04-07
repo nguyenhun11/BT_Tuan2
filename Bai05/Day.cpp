@@ -1,62 +1,31 @@
+﻿//Mã số sinh viên: 24520604
+//Họ và tên: Nguyễn Gia Hưng
+//Ngày sinh: 11/01/2006
+//Lớp: IT002.P26.2
+
 #include "Day.h"
 
 Day::Day() {
 	ngay = 1;
 	thang = 1;
-	nam = 0;
+	nam = 1;
 }
-Day::Day(int a = 1, int b = 1, int c = 0) {
+Day::Day(int a = 1, int b = 1, int c = 1) {
 	ngay = a;
 	thang = b;
 	nam = c;
 	correct();
 }
-void Day::Xuat() {
-	cout << ngay << "/" << thang << "/" << nam << endl;
+int Day::DayInMonth(int thang, int nam) {
+	static int ngayTrongThang[] = { 31, 28, 31, 30, 31, 30,
+									 31, 31, 30, 31, 30, 31 };//static để không phải cấp phát nhiều lần cho mỗi lần gọi
+	if (thang == 2 && ((nam % 400 == 0) || (nam % 4 == 0 && nam % 100 != 0)))
+		return 29;
+	return ngayTrongThang[thang - 1];
 }
-void Day::Nhap() {
-	while (1) {
-		thang = 1;
-		nam = 4;
-		cout << "ngay: ";
-		cin >> ngay;
-		if (!KiemTra()) {
-			cout << "Ngay khong hop le, nhap lai\n";
-			ngay = 1;
-			continue;
-		}
-		cout << "thang: ";
-		cin >> thang;
-		if (!KiemTra()) {
-			cout << "Thang khong hop le, nhap lai\n";
-			thang = 1;
-			continue;
-		}
-		cout << "nam: ";
-		cin >> nam;
-		if (!KiemTra()) {
-			cout << "Ngay khong hop le, nhap lai\n";
-			continue;
-		}
-		else break;
-	}
-}
-
 bool Day::KiemTra() {
 	if (ngay <= 0 || ngay > 31 || thang <= 0 || thang > 12) return 0;
-	switch (thang)
-	{
-	case 1: case 3: case 5: case 7: case 8: case 10: case 12:
-		return (ngay <= 31);
-	case 4: case 6: case 9: case 11:
-		return (ngay <= 30);
-	case 2:
-		if (NamNhuan()) return (ngay <= 29);
-		else return (ngay <= 28);
-	default:
-		return 0;
-	}
-
+	return (ngay <= DayInMonth(thang, nam));
 }
 bool Day::NamNhuan() {
 	if (nam % 100 == 0) {
@@ -103,6 +72,18 @@ void Day::correct() {
 		}
 	}
 }
+int Day::SoNgay() {
+	//Mốc là ngày 1/1/1
+	int tong = -1;
+	for (int i = 1; i < nam; i++) {// Cộng số ngày trong các năm trước đó
+		tong += (Day(1,1,i).NamNhuan()) ? 366 : 365;//Tạo ngày giả 1/1 để ktra năm nhuận
+	}
+	for (int i = 1; i < thang; i++) {// Cộng số ngày trong các tháng trước của năm hiện tại
+		tong += DayInMonth(i, nam);
+	}
+	tong += ngay;// Cộng ngày
+	return tong;
+}
 int Day::GetNgay() {
 	return ngay;
 }
@@ -124,36 +105,62 @@ void Day::SetNam(int a) {
 	nam = a;
 	correct();
 }
-Day Day::AddNgay(int a) {
-	ngay += a;
-	correct();
-	return *this;
-}
 Day Day::AddThang(int a) {
-	thang += a;
-	correct();
-	return *this;
+	return Day(ngay, thang + a, nam);
 }
 Day Day::AddNam(int a) {
-	nam += a;
-	correct();
-	return *this;
+	return Day(ngay, thang, nam + a);
 }
 string Day::GetThu() {
-	int q = ngay;
-	int m = (thang >= 3) ? thang : thang + 12;
-	int K = nam % 100;
-	int J = nam / 100;
-	int thu = (q + (13 * (m + 1) / 5) + K + K / 4 + J / 4 - 2 * J) % 7;
-	string Thu[7] = { "Thu bay","Chu nhat","Thu hai", "Thu ba", "Thu tu","Thu nam","Thu sau" };
+	// 1/1/1 la thu hai
+	int thu = SoNgay() % 7;
+	string Thu[7] = {"Thu hai","Thu ba", "Thu tu","Thu nam","Thu sau", "Thu bay","Chu nhat"};
 	return Thu[thu];
 }
 Day Day::TakeNam(int a) {
-	return AddNam(-a);
+	return Day(ngay, thang, nam - a);
 }
 Day Day::TakeThang(int a) {
-	return AddThang(-a);
+	return Day(ngay, thang - a, nam);
 }
-Day Day::TakeNgay(int a) {
-	return AddNgay(-a);
+istream& operator>>(istream& is, Day&a) {
+	while (1) {
+		a.thang = 1;
+		a.nam = 4;//Đảm bảo có thể nhập ngày 29/2
+		cout << "ngay: ";
+		is >> a.ngay;
+		if (!a.KiemTra()) {
+			cout << "Ngay khong hop le, nhap lai\n";
+			//a.ngay = 1;
+			continue;
+		}
+		cout << "thang: ";
+		is >> a.thang;
+		if (!a.KiemTra()) {
+			cout << "Thang khong hop le, nhap lai\n";
+			//a.thang = 1;
+			continue;
+		}
+		cout << "nam: ";
+		is >> a.nam;
+		if (!a.KiemTra()) {
+			cout << "Ngay khong hop le, nhap lai\n";
+			continue;
+		}
+		else break;
+	}
+	return is;
+}
+ostream& operator<<(ostream& os, Day a) {
+	os <<"(" << a.ngay << "/" << a.thang << "/" << a.nam << ") ";
+	return os;
+}
+Day Day::operator+(int a) {
+	return Day(ngay + a, thang, nam);
+}
+Day Day::operator-(int a) {
+	return Day(ngay - a, thang, nam);
+}
+int Day::operator-(Day a) {
+	return this->SoNgay() - a.SoNgay();
 }

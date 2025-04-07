@@ -1,17 +1,22 @@
-﻿#include "myString.h"
-int myString::strlen() const {
+﻿//Mã số sinh viên: 24520604
+//Họ và tên: Nguyễn Gia Hưng
+//Ngày sinh: 11/01/2006
+//Lớp: IT002.P26.2
+
+#include "myString.h"
+int cString::strlen() const {
 	int length = 0;
 	while (str[length] != '\0') {
 		length++;
 	}
 	return length;
 }
-myString::myString() {
+cString::cString() {
 	str = new char[1];
 	str[0] = '\0'; 
 }
 
-myString::myString(char* s) {
+cString::cString(char* s) {
 	if (!s) {
 		str = new char[1];
 		str[0] = '\0';
@@ -23,7 +28,7 @@ myString::myString(char* s) {
 	for (int i = 0; i < length; i++) str[i] = s[i];
 	str[length] = '\0';
 }
-myString::myString(const char* s) {
+cString::cString(const char* s) {
 	if (!s) { 
 		str = new char[1];
 		str[0] = '\0'; 
@@ -39,7 +44,7 @@ myString::myString(const char* s) {
 	}
 	str[length] = '\0';
 }
-myString::myString(const myString& other) {
+cString::cString(const cString& other) {
 	if (!other.str) {
 		str = new char[1];
 		str[0] = '\0';
@@ -53,7 +58,7 @@ myString::myString(const myString& other) {
 	str[length] = '\0';
 }
 
-myString& myString::operator=(const myString& other) {
+cString& cString::operator=(const cString& other) {
 	if (this == &other) return *this;
 	delete[] str;
 	if (!other.str) {
@@ -71,7 +76,7 @@ myString& myString::operator=(const myString& other) {
 
 	return *this;
 }
-myString myString::strcat(const myString& s1, const myString& s2) {
+cString cString::strcat(const cString& s1, const cString& s2) {
 	int len1 = s1.strlen();
 	int len2 = s2.strlen();
 	char* newStr = new char[len1 + len2 + 1];
@@ -86,13 +91,13 @@ myString myString::strcat(const myString& s1, const myString& s2) {
 
 	newStr[len1 + len2] = '\0'; 
 
-	myString result(newStr);
+	cString result(newStr);
 
 	delete[] newStr; 
 
 	return result; 
 }
-void myString::strrev() {
+void cString::strrev() {
 	int length = strlen();
 	for (int i = 0; i < length / 2; i++) {
 		char temp = str[i];
@@ -100,20 +105,20 @@ void myString::strrev() {
 		str[length - 1 - i] = temp;
 	}
 }
-void myString::strupp() {
+void cString::strupp() {
 	for (int i = 0; str[i] != '\0'; i++) {
 		if (str[i] >= 'a' && str[i] <= 'z')
 			str[i] = str[i] - ('a' - 'A');
 	}
 }
-void myString::strlow() {
+void cString::strlow() {
 	for (int i = 0; str[i] != '\0'; i++) {
 		if (str[i] >= 'A' && str[i] <= 'Z')
 			str[i] = str[i] + ('a' - 'A');
 	}
 }
 
-void myString::cinstr(myString& s, int n) {
+void cString::cinstr(cString& s, int n) {
 	if (s.str) { 
 		delete[] s.str;
 	}
@@ -127,18 +132,19 @@ void myString::cinstr(myString& s, int n) {
 	newStr[i] = '\0';
 	s.str = newStr; 
 }
-void myString::coutstr() {
-	if (!str) { 
-		cout << "Chuoi rong." << endl;
-		return;
-	}
-	for (int i = 0; str[i] != '\0'; i++) {
-		cout << str[i];
-	}
-	cout << endl;
-}
-myString::~myString() {
+cString::~cString() {
 	if (str) {
 		delete[] str;
 	}
+}
+ostream& operator<<(ostream& os, cString s) {
+	if (!s.str) {
+		os << "Chuoi rong." << endl;
+		return os;
+	}
+	for (int i = 0; s.str[i] != '\0'; i++) {
+		os << s.str[i];
+	}
+	os << endl;
+	return os;
 }

@@ -1,4 +1,10 @@
+﻿//Mã số sinh viên: 24520604
+//Họ và tên: Nguyễn Gia Hưng
+//Ngày sinh: 11/01/2006
+//Lớp: IT002.P26.2
+
 #include "ThoiGian.h"
+
 
 
 ThoiGian::ThoiGian() {
@@ -12,13 +18,35 @@ ThoiGian::ThoiGian(int a = 0, int b = 0, int c = 0) {
 	giay = c;
 	correct();
 }
-ThoiGian::ThoiGian(float a) {
+ThoiGian::ThoiGian(double a) {
 	gio = (int) a;
 	float rest = a - gio;
 	phut = (int)rest * 60;
 	giay = (int)((rest * 60 - phut) * 60);
 	correct();
 }
+void ThoiGian::setGio(int a) {
+	gio = a;
+	correct();
+}
+void ThoiGian::setPhut(int a) {
+	phut = a;
+	correct();
+}
+void ThoiGian::setGiay(int a) {
+	giay = a;
+	correct();
+}
+int ThoiGian::getGio() {
+	return gio;
+}
+int ThoiGian::getPhut() {
+	return phut;
+}
+int ThoiGian::getGiay() {
+	return giay;
+}
+
 void ThoiGian::correct() {
 	while (giay < 0) {
 		phut--;
@@ -37,34 +65,27 @@ void ThoiGian::correct() {
 		phut %= 60;
 	}
 }
-void ThoiGian::Xuat() {
-	cout << gio << ":" << phut << ":" << giay << endl;
-}
-void ThoiGian::Nhap() {
+istream& operator>>(istream& is, ThoiGian& a) {
 	cout << "Nhap thoi gian:\n";
 	cout << "Gio: ";
-	cin >> gio;
+	is >> a.gio;
 	cout << "Phut: ";
-	cin >> phut;
+	is >> a.phut;
 	cout << "Giay: ";
-	cin >> giay;
-	correct();
+	is >> a.giay;
+	a.correct();
+	return is;
 }
-ThoiGian ThoiGian::Add(ThoiGian a) {
-	gio += a.gio;
-	phut += a.phut;
-	giay += a.giay;
-	correct();
-	return *this;
-
+ostream& operator<<(ostream& os, ThoiGian a) {
+	os << "["<< a.gio << ":" << a.phut << ":" << a.giay << "]\n";
+	return os;
 }
-ThoiGian ThoiGian::Multi(int a) {
-	gio *= a;
-	phut *= a;
-	giay *= a;
-	correct();
-	return *this;
+ThoiGian ThoiGian::operator+(ThoiGian a) {
+	return ThoiGian(this->gio + a.gio, this->phut + a.phut, this->giay + a.giay);
 }
-ThoiGian ThoiGian::Tru(ThoiGian a) {
-	return this->Add(a.Multi(-1));
+ThoiGian ThoiGian::operator-(ThoiGian a) {
+	return *this + a * (-1);
+}
+ThoiGian ThoiGian::operator*(double a) {
+	return ThoiGian(gio * a, phut * a, giay * a);
 }

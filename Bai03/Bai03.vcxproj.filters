@@ -26,8 +26,5 @@
     <ClInclude Include="SoPhuc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ThongBao.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
